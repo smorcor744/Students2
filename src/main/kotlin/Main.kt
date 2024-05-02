@@ -3,7 +3,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -50,8 +49,7 @@ fun StudentItem(student: String, onDelete: () -> Unit) {
 @Composable
 fun StudentAdd(students: SnapshotStateList<String>, newStudentName: MutableState<String>) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        TextField(
-            modifier = Modifier.background(Color.White),
+        OutlinedTextField(
             value = newStudentName.value,
             onValueChange = { newStudentName.value = it },
             label = { Text("New student name") })
@@ -100,9 +98,7 @@ fun Students(file: File): SnapshotStateList<String> {
 
 @Preview
 @Composable
-fun MainScreen() {
-    val file = File("Students.txt")
-    val students = Students(file)
+fun MainScreen(file : File,students : SnapshotStateList<String>) {
     val newStudentName = remember { mutableStateOf("") }
     val number by remember { mutableStateOf(students.size) }
 
@@ -167,8 +163,10 @@ fun StudentText(number: Int) {
 
 
 fun main() = application {
+    val file = File("Students.txt")
+    val students = Students(file)
     Window(onCloseRequest = ::exitApplication) {
-        MainScreen()
+        MainScreen(file, students)
     }
 }
 
