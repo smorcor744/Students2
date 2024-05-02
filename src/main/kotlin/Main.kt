@@ -15,6 +15,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
+import androidx.compose.ui.res.painterResource
+import kotlinx.coroutines.delay
 import java.io.File
 
 @Composable
@@ -47,9 +52,10 @@ fun StudentItem(student: String, onDelete: () -> Unit) {
 
 
 @Composable
-fun StudentAdd(students: SnapshotStateList<String>, newStudentName: MutableState<String>) {
+fun StudentAdd(students: SnapshotStateList<String>, newStudentName: MutableState<String>, newStudentFocusRequester: FocusRequester) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         OutlinedTextField(
+            modifier = Modifier.focusRequester(newStudentFocusRequester),
             value = newStudentName.value,
             onValueChange = { newStudentName.value = it },
             label = { Text("New student name") })
@@ -66,6 +72,7 @@ fun SaveButton(students: SnapshotStateList<String>, file: File) {
             file.bufferedWriter().use { out ->
                 students.forEach { out.write("$it\n") }
             }
+
         }
     ) {
         Text("Save changes")
@@ -98,9 +105,15 @@ fun Students(file: File): SnapshotStateList<String> {
 
 @Preview
 @Composable
-fun MainScreen(file : File,students : SnapshotStateList<String>) {
+fun MainScreen(file: File, students: SnapshotStateList<String>) {
     val newStudentName = remember { mutableStateOf("") }
     val number by remember { mutableStateOf(students.size) }
+
+    var showInfoMessage by remember { mutableStateOf(false) }
+    var infoMessage by remember { mutableStateOf("") }
+
+    val newStudentFocusRequester = remember { FocusRequester() }
+
 
 
     Box(
@@ -116,14 +129,27 @@ fun MainScreen(file : File,students : SnapshotStateList<String>) {
                         .padding(start = 160.dp)
 
                 ) {
-                    StudentAdd(students, newStudentName)
+                    StudentAdd(students, newStudentName,newStudentFocusRequester)
                 }
 
                 Box(
                     modifier = Modifier.fillMaxSize().padding(vertical = 20.dp),
                     contentAlignment = BottomCenter
                 ) {
-                    SaveButton(students, file)
+//                    SaveButton(students, file)
+                    Button(
+                        onClick = {
+                            file.bufferedWriter().use { out ->
+                                students.forEach { out.write("$it\n") }
+                            }
+                            infoMessage = "Fichero Guardado"
+                            showInfoMessage = true
+
+
+                        }
+                    ) {
+                        Text("Save changes")
+                    }
                 }
 
             }
@@ -135,7 +161,7 @@ fun MainScreen(file : File,students : SnapshotStateList<String>) {
                 .align(Alignment.CenterEnd)
                 .padding(end = 20.dp)
 
-            ) {
+        ) {
             Spacer(modifier = Modifier.width(20.dp))
 
             StudentText(number)
@@ -153,6 +179,27 @@ fun MainScreen(file : File,students : SnapshotStateList<String>) {
 
 
     }
+    // Gestión de la visibilidad del mensaje informativo
+    if (showInfoMessage) {
+        InfoMessage(
+            message = infoMessage,
+            onCloseInfoMessage = {
+                showInfoMessage = false
+                infoMessage = ""
+                newStudentFocusRequester.requestFocus()
+            }
+        )
+    }
+
+    // Automáticamente oculta el mensaje después de un retraso
+    LaunchedEffect(showInfoMessage) {
+        if (showInfoMessage) {
+            delay(2000)
+            showInfoMessage = false
+            infoMessage = ""
+            newStudentFocusRequester.requestFocus()
+        }
+    }
 }
 
 
@@ -161,6 +208,22 @@ fun StudentText(number: Int) {
     Text("Students: $number")
 }
 
+@Composable
+fun InfoMessage(message: String, onCloseInfoMessage: () -> Unit) {
+    DialogWindow(
+        icon = painterResource("img.png"),
+        title = "Atención",
+        resizable = false,
+        onCloseRequest = onCloseInfoMessage
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize().padding(16.dp)
+        ) {
+            Text(message)
+        }
+    }
+}
 
 fun main() = application {
     val file = File("Students.txt")
