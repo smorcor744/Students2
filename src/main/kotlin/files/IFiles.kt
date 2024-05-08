@@ -1,2 +1,4 @@
+package files
+
 interface IFiles {
 }
