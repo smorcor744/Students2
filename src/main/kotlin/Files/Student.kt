@@ -1,4 +1,4 @@
-package Diego
+package Files
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*

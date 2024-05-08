@@ -1,4 +1,4 @@
-package Diego
+package Files
 
 import androidx.compose.ui.graphics.Color
 

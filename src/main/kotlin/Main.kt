@@ -1,5 +1,5 @@
-import Diego.GetWindowState
-import Diego.StudentWindow
+import Files.GetWindowState
+import Files.StudentWindow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.application
 import androidx.compose.ui.unit.dp
