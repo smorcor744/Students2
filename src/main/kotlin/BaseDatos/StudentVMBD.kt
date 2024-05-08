@@ -1,8 +1,7 @@
-import BaseDatos.IRepo
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
-class StudentVMBD : IRepo {
+class StudentVMBD {
     private var _url: MutableState<String> = mutableStateOf("")
     val url: MutableState<String> get() = _url
 

@@ -1,4 +1,0 @@
-package BaseDatos
-
-interface IRepo {
-}
