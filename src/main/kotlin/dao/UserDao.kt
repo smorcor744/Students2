@@ -2,6 +2,7 @@ package dao
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import entity.UserEntity
 import output.Console
 import output.IOutPutInfo
 import java.sql.SQLException
@@ -9,7 +10,6 @@ import java.util.*
 import javax.sql.DataSource
 
 
-data class UserEntity(var id: UUID = UUID.randomUUID(), var name: String, var email: String)
 
 
 interface UserDAO {

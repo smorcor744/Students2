@@ -9,7 +9,7 @@ class UserServiceImpl(private val userDao: UserDAO) : UserService {
         return userDao.create(user)
     }
 
-    override fun getById(id: UUID): UserEntity? {
+    override fun getById(id: UUID):UserEntity? {
         return userDao.getById(id)
     }
 
