@@ -9,9 +9,6 @@ import java.sql.SQLException
 import java.util.*
 import javax.sql.DataSource
 
-
-
-
 interface UserDAO {
     fun create(user: UserEntity): UserEntity?
     fun getAll(): List<UserEntity>?

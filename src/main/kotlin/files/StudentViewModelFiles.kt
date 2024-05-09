@@ -1,8 +1,6 @@
 package files
 
 import androidx.compose.runtime.*
-import files.IFiles
-import files.IStudentViewModelFiles
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
