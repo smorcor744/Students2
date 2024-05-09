@@ -1,6 +1,7 @@
 package output
 
-import dao.UserEntity
+import entity.UserEntity
+
 
 class Console : IOutPutInfo {
 

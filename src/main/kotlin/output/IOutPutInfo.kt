@@ -1,6 +1,6 @@
 package output
 
-import dao.UserEntity
+import entity.UserEntity
 
 interface IOutPutInfo {
 
