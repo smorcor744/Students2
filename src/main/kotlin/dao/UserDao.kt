@@ -3,7 +3,6 @@ package dao
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import entity.UserEntity
-import output.Console
 import output.IOutPutInfo
 import java.sql.SQLException
 import java.util.*
